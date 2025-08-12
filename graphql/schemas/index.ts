@@ -12,7 +12,7 @@ export const typeDefs = gql`
   }
 
   type Query {
-    getTodos: [Todo!]!
+    getTodo: [Todo!]!
 
   }
 

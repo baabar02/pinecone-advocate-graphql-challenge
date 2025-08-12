@@ -35,6 +35,9 @@ export const Hello = () => {
       });
 
       const result = await response.json();
+      console.log("Full GraphQL response:", result);
+
+
       setTodos(result.data.getTodo);
     };
 
@@ -52,7 +55,7 @@ export const Hello = () => {
         body: JSON.stringify({
           query: `
             mutation {
-              createTodo(title: "Learn GraphQL") {
+              addTodo(title: "Learn GraphQL") {
                 id
                 title
                 completed
@@ -63,9 +66,9 @@ export const Hello = () => {
       });
 
       const result = await response.json();
-      console.log("Created todo:", result.data.createTodo);
+      console.log("Created todo:", result.data.addTodo);
 
-      setTodos(prev => [...prev, result.data.createTodo]);
+      setTodos(prev => [...prev, result.data.addTodo]);
     };
 
     addTodo();
