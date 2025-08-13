@@ -59,3 +59,7 @@ export const updateTodo = async (
 
   return updatedTodo;
 };
+
+export const sayHello = (_parent: any, args: { name: string }) => {
+  return { name:  args.name };
+};

@@ -9,8 +9,16 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+// export default function App({ Component, pageProps }: AppProps) {
+//   return <ApolloProvider client={client}>
+//     <Component {...pageProps} />;
+//   </ApolloProvider>
+// }
+
 export default function App({ Component, pageProps }: AppProps) {
-  return <ApolloProvider client={client}>
-    <Component {...pageProps} />;
-  </ApolloProvider>
+  return (
+    <ApolloProvider client={client}>
+      <Component {...pageProps} />
+    </ApolloProvider>
+  );
 }

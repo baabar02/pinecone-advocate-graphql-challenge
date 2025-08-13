@@ -11,3 +11,7 @@ const todos = await TodoModel.find({});
  return todos;
 
 };
+
+export const helloQuery = () =>{
+    return  "hello query"
+}
