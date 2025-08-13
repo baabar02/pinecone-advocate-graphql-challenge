@@ -1,4 +1,4 @@
-import { addTodo } from "./mutations/say-hello";
+import { addTodo, deleteTodo, updateTodo } from "./mutations/say-hello";
 import { getTodo } from "./queries/hello-query";
 
 export const resolvers = {
@@ -7,5 +7,7 @@ export const resolvers = {
   },
   Mutation: {
     addTodo,
+    updateTodo,
+    deleteTodo
   },
 };

@@ -9,7 +9,7 @@ export const typeDefs = gql`
     id: ID!
     title: String!
     completed: Boolean!
-  }
+    _id: String}
 
   type Query {
     getTodo: [Todo!]!
@@ -20,7 +20,7 @@ export const typeDefs = gql`
     addTodo(title: String!): Todo!
     updateTodo(id: ID!, title: String, completed: Boolean): Todo!
     deleteTodo(id: ID!): Boolean!
-    sayHello(name: String!): String
+   
   }
 `;
 
@@ -28,6 +28,8 @@ const TodoSchema = new mongoose.Schema({
   id: { type: String, required: true, unique: true },
   title: { type: String, required: true },
   completed: { type: Boolean, default: false },
-});
+}, 
+
+{timestamps: true });
 
 export const TodoModel = mongoose.models.Todo || mongoose.model("Todo", TodoSchema);

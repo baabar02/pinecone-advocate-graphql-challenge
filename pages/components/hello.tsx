@@ -2,25 +2,27 @@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { gql, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 
 export type TodoType = {
   id: string;
   title: string;
   completed: boolean;
+  _id: string
 };
 
 export const Hello = () => {
   const [todos, setTodos] = useState<TodoType[]>([]);
-  // const [newTodo, setNewTodo] = useState<string>('');
+  const [newTodo, setNewTodo] = useState<string>("");
+
 
   useEffect(() => {
     const getTodos = async () => {
+
       const response = await fetch("/api/graphql", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           query: `
             query {
@@ -33,46 +35,113 @@ export const Hello = () => {
           `,
         }),
       });
-
+      // console.log(response, "response");
+      
       const result = await response.json();
-      console.log("Full GraphQL response:", result);
-
-
+      // console.log(result, "result");
       setTodos(result.data.getTodo);
     };
 
     getTodos();
+    console.log("Todos fetched:", todos);
+    
   }, []);
 
 
-  useEffect(() => {
-    const addTodo = async () => {
-      const response = await fetch("/api/graphql", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: `
-            mutation {
-              addTodo(title: "Learn GraphQL") {
-                id
-                title
-                completed
-              }
+  const handleAdd = async () => {
+    if (!newTodo.trim()) return;
+
+    const response = await fetch("/api/graphql", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        query: `
+          mutation {
+            addTodo(title: "${newTodo}") {
+              id
+              title
+              completed
             }
-          `,
-        }),
-      });
+          }
+        `,
+      }),
+    });
 
-      const result = await response.json();
-      console.log("Created todo:", result.data.addTodo);
+    const result = await response.json();
+    setTodos(prev => [...prev, result.data.addTodo]);
+    setNewTodo(""); 
+  };
 
-      setTodos(prev => [...prev, result.data.addTodo]);
-    };
 
-    addTodo();
-  }, []);
+  const handleDelete = async (id: string, title: string) => {
+    await fetch("/api/graphql", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        query: `
+          mutation {
+            deleteTodo(id: "${id}")
+          }
+        `,
+      }),
+    });
+
+    setTodos(prev => prev.filter(todo => todo.id !== id));
+  };
+
+ 
+const handleUpdate = async (id: string, title?: string, completed?: boolean) => {
+  if (title === undefined && completed === undefined) return;
+
+  const query = `
+    mutation UpdateTodo($id: ID!, $title: String, $completed: Boolean) {
+      updateTodo(id: $id, title: $title, completed: $completed) {
+        id
+        title
+        completed
+      }
+    }
+  `;
+
+  const variables = {
+    id,
+    ...(title !== undefined && { title }),
+    ...(completed !== undefined && { completed }),
+  };
+
+  const response = await fetch("/api/graphql", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query, variables }),
+  });
+
+  const result = await response.json();
+  console.log("Update result:", result);
+ 
+  if (result.errors) {
+    console.error("GraphQL errors:", result.errors);
+    return;
+  }
+
+  const updatedTodo = result.data.updateTodo;
+  setTodos((prev) =>
+    prev.map((t) => (t.id === updatedTodo.id ? updatedTodo : t))
+  );
+};
+
+
+const GET_TODOS = gql`
+  query GetTod {
+    getTodo {
+      id
+      title
+      completed
+    }
+  }`
+
+const {loading, error, data} = useQuery(GET_TODOS);
+
+console.log(data, "Query da");
 
   return (
     <div
@@ -87,18 +156,29 @@ export const Hello = () => {
     >
       <h1>GraphQL To-Do</h1>
 
+      <div style={{ marginBottom: "1rem" }}>
+        <Input
+          value={newTodo}
+          onChange={(e) => setNewTodo(e.target.value)}
+          placeholder='Insert a new todo'
+        />
+        <Button onClick={handleAdd} style={{ marginTop: "0.5rem" }}>
+          Add To-Do
+        </Button>
+      </div>
+
       {todos.map((todo) => (
-        <div key={todo.id} style={{ margin: "10px 0" }}>
+        <div key={todo.id} style={{ margin: "10px 0", border: "1px solid gray", padding: "10px", width: "300px" }}>
           <h3>{todo.title}</h3>
           <p>{todo.completed ? ' Completed' : ' Not Completed'}</p>
+          <Button onClick={() => handleUpdate(todo.id, todo.title, todo.completed)} style={{ marginRight: "0.5rem" }}>
+            Update
+          </Button>
+          <Button variant="destructive" onClick={() => handleDelete(todo.id, todo.title)}>
+            Delete
+          </Button>
         </div>
       ))}
-
-      <Button>
-        Add To-Do
-      </Button>
-      <Input onChange={(e)=>(e.target.value)}
-      placeholder='insert todo'></Input>
     </div>
   );
 };
