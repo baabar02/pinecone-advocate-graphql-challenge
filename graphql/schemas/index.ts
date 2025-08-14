@@ -9,16 +9,19 @@ export const typeDefs = gql`
     id: ID!
     title: String!
     completed: Boolean!
-    _id: String}
+    _id: String
+     description: String
+
+    }
+   
 
   type Query {
     getTodo: [Todo!]!
-
   }
 
   type Mutation {
-    addTodo(title: String!): Todo!
-    updateTodo(id: ID!, title: String, completed: Boolean): Todo!
+    addTodo(title: String!, description:String): Todo!
+    updateTodo(id: ID!, title: String, completed: Boolean, description: String): Todo!
     deleteTodo(id: ID!): Boolean!
    
   }
@@ -28,6 +31,7 @@ const TodoSchema = new mongoose.Schema({
   id: { type: String, required: true, unique: true },
   title: { type: String, required: true },
   completed: { type: Boolean, default: false },
+  description: { type: String, default: "" }
 }, 
 
 {timestamps: true });

@@ -17,6 +17,9 @@ const config = {
     "^.+\\.(ts|tsx|js|jsx)$": "ts-jest"
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
+    moduleNameMapper: {
+    '^node:(.*)$': '$1', 
+  },
   collectCoverage: true,
   collectCoverageFrom: [
     '!**/*.{js,jsx,ts,tsx}',

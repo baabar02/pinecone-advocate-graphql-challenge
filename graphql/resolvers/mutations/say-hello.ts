@@ -6,12 +6,13 @@ import { title } from "process";
 
 
 
-export const addTodo = async (_: unknown, args: { title: string }) => {
+export const addTodo = async (_: unknown, args: { title: string, description:string }) => {
   await connectMongoose();
   const newTodo = new TodoModel({
     id: nanoid(),
     title: args.title,
-    completed: false
+    completed: false,
+    description: args.description || ""
   });
   await newTodo.save();
   return newTodo;
@@ -30,7 +31,7 @@ export const deleteTodo = async (_: unknown, args: { id: string }) => {
 
 export const updateTodo = async (
   _: unknown,
-  args: { id: string; title?: string; completed?: boolean }
+  args: { id: string; title?: string; completed?: boolean, description?: string }
 ) => {
   await connectMongoose();
 
@@ -45,6 +46,7 @@ export const updateTodo = async (
     {
       ...(args.title !== undefined && { title: args.title }),
       ...(args.completed !== undefined && { completed: args.completed }),
+      ...(args.description !== undefined && { description: args.description })
  
     },
     { new: true } 
