@@ -10,6 +10,7 @@ const createJestConfig = nextJest({
 // Add any custom config to be passed to Jest
 const config = {
   moduleDirectories: ['node_modules', '<rootDir>/'],
+
   testEnvironment: 'node',
   rootDir: './',
   preset: "ts-jest",

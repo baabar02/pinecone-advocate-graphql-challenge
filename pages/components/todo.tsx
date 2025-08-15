@@ -154,8 +154,8 @@ console.log(data, "Query da");
           Add To-Do
         </Button>
       </div>
-    <TodoUpdate/>
-      {/* <div className="w-full max-w-md flex flex-col gap-4">
+    {/* <TodoUpdate/> */}
+      <div className="w-full max-w-md flex flex-col gap-4">
         {todos.map((todo) => (
           <div key={todo.id} className="border border-gray-300 rounded p-4 bg-white shadow flex flex-col gap-2">
             <Input
@@ -190,130 +190,7 @@ console.log(data, "Query da");
             </div>
           </div>
         ))}
-      </div> */}
+      </div>
     </div>
   );
 };
-
-// 'use client';
-
-// import { Button } from '@/components/ui/button';
-// import { Input } from '@/components/ui/input';
-// import { useState } from 'react';
-// import { gql, useQuery, useMutation } from '@apollo/client';
-// import { TodoUpdate } from './todo-update';
-
-// export type TodoType = {
-//   id: string;
-//   title: string;
-//   completed: boolean;
-//   description: string;
-// };
-
-// const GET_TODOS = gql`
-//   query GetTodos {
-//     getTodo {
-//       id
-//       title
-//       completed
-//       description
-//     }
-//   }
-// `;
-
-// const ADD_TODO = gql`
-//   mutation AddTodo($title: String!, $description: String) {
-//     addTodo(title: $title, description: $description) {
-//       id
-//       title
-//       completed
-//       description
-//     }
-//   }
-// `;
-
-// const DELETE_TODO = gql`
-//   mutation DeleteTodo($id: ID!) {
-//     deleteTodo(id: $id)
-//   }
-// `;
-
-// export const Hello = () => {
-//   const { loading, error, data, refetch } = useQuery(GET_TODOS);
-//   const [addTodo] = useMutation(ADD_TODO);
-//   const [deleteTodo] = useMutation(DELETE_TODO);
-
-//   const [newTodo, setNewTodo] = useState('');
-//   const [newDescription, setNewDescription] = useState('');
-
-//   const handleAdd = async () => {
-//     if (!newTodo.trim()) return;
-
-//     try {
-//       await addTodo({
-//         variables: { title: newTodo, description: newDescription },
-//       });
-//       setNewTodo('');
-//       setNewDescription('');
-//       refetch();
-//     } catch (err) {
-//       console.error("Failed to add todo", err);
-//     }
-//   };
-
-//   const handleDelete = async (id: string) => {
-//     try {
-//       await deleteTodo({ variables: { id } });
-//       refetch();
-//     } catch (err) {
-//       console.error("Failed to delete todo", err);
-//     }
-//   };
-
-//   if (loading) return <p>Loading...</p>;
-//   if (error) return <p>Error loading todos</p>;
-
-//   return (
-//     <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-gray-50">
-//       <h1 className="text-3xl font-bold mb-6">GraphQL To-Do</h1>
-
-//       <div className="mb-4 w-full max-w-md flex flex-col gap-2">
-//         <Input
-//           value={newTodo}
-//           onChange={(e) => setNewTodo(e.target.value)}
-//           placeholder="Insert a new todo"
-//         />
-//         <Input
-//           value={newDescription}
-//           onChange={(e) => setNewDescription(e.target.value)}
-//           placeholder="Insert description"
-//         />
-//         <Button onClick={handleAdd} className="mt-2 w-full bg-red-400">
-//           Add To-Do
-//         </Button>
-//       </div>
-
-//       <div className="w-full max-w-md flex flex-col gap-4">
-//         {data?.getTodo.map((todo: TodoType) => (
-//           <div
-//             key={todo.id}
-//             className="border border-gray-300 rounded p-4 bg-white shadow flex flex-col gap-2"
-//           >
-//             <h3 className="font-semibold">{todo.title}</h3>
-//             <p>{todo.description}</p>
-//             <p>Status: {todo.completed ? "Completed" : "Pending"}</p>
-//             <Button
-//               variant="destructive"
-//               onClick={() => handleDelete(todo.id)}
-//               className="mt-2"
-//             >
-//               Delete
-//             </Button>
-//           </div>
-//         ))}
-//       </div>
-
-//       <TodoUpdate refetchTodos={refetch} />
-//     </div>
-//   );
-// };
