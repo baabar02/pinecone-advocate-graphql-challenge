@@ -1,9 +1,6 @@
 import { gql } from "graphql-tag";
 import mongoose, { model } from "mongoose";
 
-
-
-
 export const typeDefs = gql`
 
   type Todo {
@@ -21,9 +18,21 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    addTodo(title: String!, description:String): Todo!
+    addTodo(id:ID!, title: String!, description:String): Todo!
     updateTodo(id: ID!, title: String, completed: Boolean, description: String): Todo!
     deleteTodo(id: ID!): Boolean!
    
   }
 `;
+
+
+const TodoSchema = new mongoose.Schema({
+  id: { type: String, required: true, unique: true },
+  title: { type: String, required: true },
+  completed: { type: Boolean, default: false },
+  description: { type: String, required: true}
+}, 
+
+{timestamps: true });
+
+export const TodoModel = mongoose.models.Todo || mongoose.model("Todo", TodoSchema);

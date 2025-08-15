@@ -1,4 +1,5 @@
-import { TodoModel } from "@/graphql/schemas";
+
+import { TodoModel } from "@/graphql/schemas/model";
 import { connectMongoose } from "@/mongoose/mongoose-connection";
 
 
@@ -7,11 +8,6 @@ import { connectMongoose } from "@/mongoose/mongoose-connection";
 export const getTodo = async () => {
   
 await connectMongoose();
-const todos = await TodoModel.find({});
+const todos = await TodoModel.find();
  return todos;
-
 };
-
-export const helloQuery = () =>{
-    return  "hello query"
-}

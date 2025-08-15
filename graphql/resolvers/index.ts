@@ -1,5 +1,5 @@
-import { addTodo, deleteTodo, updateTodo } from "./mutations/say-hello";
-import { getTodo } from "./queries/hello-query";
+import { addTodo, deleteTodo, updateTodo } from "./mutations/delete-todo";
+import { getTodo } from "./queries/get-todo";
 
 export const resolvers = {
   Query: {

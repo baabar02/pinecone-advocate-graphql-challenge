@@ -19,7 +19,8 @@ const config = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
     moduleNameMapper: {
-    '^node:(.*)$': '$1', 
+    // '^node:(.*)$': '$1', 
+     "^@/(.*)$": "<rootDir>/$1"
   },
   collectCoverage: true,
   collectCoverageFrom: [
