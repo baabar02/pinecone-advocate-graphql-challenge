@@ -1,5 +1,4 @@
 import { gql } from "graphql-tag";
-import mongoose, { model } from "mongoose";
 
 
 

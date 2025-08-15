@@ -1,5 +1,5 @@
 import { gql } from "graphql-tag";
-import mongoose, { model } from "mongoose";
+import mongoose  from "mongoose";
 
 export const typeDefs = gql`
 
